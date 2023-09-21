@@ -47,7 +47,7 @@
                         <String fx:value="btn-1" />
                         <String fx:value="radius" />
                      </styleClass></Button>
-                        <ComboBox fx:id="login_user" layoutX="101.0" layoutY="469.0" prefHeight="30.0" prefWidth="150.0" promptText="Select User" stylesheets="@design/PageDesign.css">
+                        <ComboBox fx:id="login_user" layoutX="101.0" layoutY="469.0" onAction="#switchPage" prefHeight="30.0" prefWidth="150.0" promptText="Select User" stylesheets="@design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />
                         <String fx:value="white-bg" />
@@ -67,18 +67,6 @@
                      </font>
                   </Label>
                   <Label layoutX="140.0" layoutY="123.0" text="Admin Portal" />
-                  <TextField fx:id="register_username" layoutX="50.0" layoutY="226.0" prefHeight="30.0" prefWidth="250.0" promptText="Username" stylesheets="@design/PageDesign.css">
-                     <styleClass>
-                        <String fx:value="textfield-1" />
-                        <String fx:value="white-bg" />
-                     </styleClass>
-                  </TextField>
-                  <PasswordField fx:id="register_password" layoutX="50.0" layoutY="264.0" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@design/PageDesign.css">
-                     <styleClass>
-                        <String fx:value="textfield-1" />
-                        <String fx:value="white-bg" />
-                     </styleClass>
-                  </PasswordField>
                   <TextField fx:id="register_showPassword" layoutX="50.0" layoutY="264.0" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@design/PageDesign.css" visible="false">
                      <styleClass>
                         <String fx:value="textfield-1" />
@@ -96,6 +84,24 @@
                   <Hyperlink fx:id="register_loginHere" layoutX="202.0" layoutY="513.0" onAction="#switchForm" text="Login here" />
                   <FontIcon fill="#188ba7" iconLiteral="fa-hospital-o" iconSize="70" layoutX="147.0" layoutY="482.0" />
                   <TextField fx:id="register_email" layoutX="50.0" layoutY="187.0" prefHeight="30.0" prefWidth="250.0" promptText="Email Address" stylesheets="@design/PageDesign.css">
+                     <styleClass>
+                        <String fx:value="textfield-1" />
+                        <String fx:value="white-bg" />
+                     </styleClass>
+                  </TextField>
+                  <TextField fx:id="register_username" layoutX="50.0" layoutY="225.0" prefHeight="30.0" prefWidth="250.0" promptText="Username" stylesheets="@design/PageDesign.css">
+                     <styleClass>
+                        <String fx:value="textfield-1" />
+                        <String fx:value="white-bg" />
+                     </styleClass>
+                  </TextField>
+                  <PasswordField fx:id="register_password" layoutX="49.0" layoutY="264.0" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@design/PageDesign.css">
+                     <styleClass>
+                        <String fx:value="textfield-1" />
+                        <String fx:value="white-bg" />
+                     </styleClass>
+                  </PasswordField>
+                  <TextField fx:id="register_showPassword" layoutX="49.0" layoutY="264.0" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@design/PageDesign.css" visible="false">
                      <styleClass>
                         <String fx:value="textfield-1" />
                         <String fx:value="white-bg" />

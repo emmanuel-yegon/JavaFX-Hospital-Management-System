@@ -21,10 +21,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HospitalManagementController implements Initializable {
+public class DoctorPageController implements Initializable {
 
     @FXML
     private CheckBox login_checkBox;
+
+    @FXML
+    private TextField login_doctorID;
 
     @FXML
     private AnchorPane login_form;
@@ -45,19 +48,22 @@ public class HospitalManagementController implements Initializable {
     private ComboBox<?> login_user;
 
     @FXML
-    private TextField login_username;
-
-    @FXML
     private AnchorPane main_form;
 
     @FXML
     private CheckBox register_checkBox;
 
     @FXML
+    private TextField register_doctorID;
+
+    @FXML
     private TextField register_email;
 
     @FXML
     private AnchorPane register_form;
+
+    @FXML
+    private TextField register_fullName;
 
     @FXML
     private Hyperlink register_loginHere;
@@ -71,79 +77,89 @@ public class HospitalManagementController implements Initializable {
     @FXML
     private Button register_signupBtn;
 
-    @FXML
-    private TextField register_username;
-
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet rs;
 
-    private AlertMessage alert = new AlertMessage();
+    private final AlertMessage alert = new AlertMessage();
 
-    public void loginAccount() {
+    @FXML
+    void loginAccount() {
 
-        if (login_username.getText().isEmpty()
+        if (login_doctorID.getText().isEmpty()
                 || login_password.getText().isEmpty()) {
             alert.errorMessage("Please fill all blank fields");
         } else {
 
-            String sql = "SELECT * FROM admin WHERE username = ? AND password= ?";
-
+            String sql = "SELECT * FROM doctor WHERE doctor_id = ? AND password = ? AND delete_date IS NULL ";
             connect = Database.connectDB();
 
             try {
+                String checkStatus = "SELECT status FROM doctor WHERE doctor_id='" + login_doctorID.getText() + "'  AND password ='" + login_password.getText() + "' AND status='Confirm'";
 
-                if (!login_showPassword.isVisible()) {
-                    if (!login_showPassword.getText().equals(login_password.getText())) {
-                        login_showPassword.setText(login_password.getText());
-                    }
-                } else {
-                    if (!login_showPassword.getText().equals(login_password.getText())) {
-                        login_password.setText(login_showPassword.getText());
-                    }
-                }
-
-                prepare = connect.prepareStatement(sql);
-                prepare.setString(1, login_username.getText());
-                prepare.setString(2, login_password.getText());
+                prepare = connect.prepareStatement(checkStatus);
                 rs = prepare.executeQuery();
 
                 if (rs.next()) {
-                    alert.successMessage("Login Successfully!");
+
+                    if (!login_showPassword.isVisible()) {
+                        if (!login_showPassword.getText().equals(login_password.getText())) {
+                            login_showPassword.setText(login_password.getText());
+                        }
+                    } else {
+                        if (!login_showPassword.getText().equals(login_password.getText())) {
+                            login_password.setText(login_showPassword.getText());
+                        }
+                    }
+
+                    alert.errorMessage("Need the confirmation of the Admin!");
                 } else {
-                    alert.errorMessage("Incorrect Username/Password");
+
+                    prepare = connect.prepareStatement(sql);
+                    prepare.setString(1, login_doctorID.getText());
+                    prepare.setString(2, login_password.getText());
+
+                    rs = prepare.executeQuery();
+
+                    if (rs.next()) {
+                        alert.successMessage("Login Successfully!");
+                    } else {
+                        alert.errorMessage("Incorrect Username/Password");
+                    }
                 }
+
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
+
         }
     }
 
-    public void loginShowPassword() {
+    @FXML
+    void loginShowPassword() {
 
-        if (login_checkBox.isSelected()) {
+        if (login_checkBox.isSelected()){
             login_showPassword.setText(login_password.getText());
-            login_showPassword.setVisible(true);
             login_password.setVisible(false);
-        } else {
+            login_showPassword.setVisible(true);
+        }else {
             login_password.setText(login_showPassword.getText());
-            login_showPassword.setVisible(false);
             login_password.setVisible(true);
+            login_showPassword.setVisible(false);
         }
+
     }
 
-    public void registerAccount() {
-
-        if (register_email.getText().isEmpty()
-                || register_username.getText().isEmpty()
+    @FXML
+    void registerAccount() {
+        if (register_fullName.getText().isEmpty()
+                || register_email.getText().isEmpty()
+                || register_doctorID.getText().isEmpty()
                 || register_password.getText().isEmpty()) {
-
             alert.errorMessage("Please fill all blank fields");
-
         } else {
 
-            String checkUsername = "SELECT * FROM admin WHERE username ='"
-                    + register_username.getText() + "'";
+            String checkDoctorID = "SELECT * FROM doctor WHERE doctor_id='" + register_doctorID.getText() + "'";
 
             connect = Database.connectDB();
 
@@ -152,43 +168,41 @@ public class HospitalManagementController implements Initializable {
                 if (!register_showPassword.isVisible()) {
                     if (!register_showPassword.getText().equals(register_password.getText())) {
                         register_showPassword.setText(register_password.getText());
-                    } else {
-                        if (!register_showPassword.getText().equals(register_password.getText())) {
-                            register_password.setText(register_showPassword.getText());
-                        }
                     }
-
+                } else {
+                    if (!register_showPassword.getText().equals(register_password.getText())) {
+                        register_password.setText(register_showPassword.getText());
+                    }
                 }
 
-                prepare = connect.prepareStatement(checkUsername);
+                prepare = connect.prepareStatement(checkDoctorID);
                 rs = prepare.executeQuery();
 
                 if (rs.next()) {
-
-                    alert.errorMessage(register_username.getText() + " already exist!");
-
+                    alert.errorMessage(register_doctorID.getText() + "already  taken");
                 } else if (register_password.getText().length() < 8) {
-                    alert.errorMessage("Invalid Password, at least 8 characters needed");
+                    alert.errorMessage("Invalid password,at least 8 characters needed");
                 } else {
 
-                    String insertData = "INSERT INTO admin(email,username,password,date) VALUES(?,?,?,?)";
+                    String insertData = "INSERT INTO  doctor(full_name,email,doctor_id,password,date,status) VALUES(?,?,?,?,?,?)";
+
+                    prepare = connect.prepareStatement(insertData);
 
                     Date date = new Date();
                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                    prepare = connect.prepareStatement(insertData);
-                    prepare.setString(1, register_email.getText());
-                    prepare.setString(2, register_username.getText());
-                    prepare.setString(3, register_password.getText());
-                    prepare.setString(4, String.valueOf(sqlDate));
+                    prepare.setString(1, register_fullName.getText());
+                    prepare.setString(2, register_email.getText());
+                    prepare.setString(3, register_doctorID.getText());
+                    prepare.setString(4, register_password.getText());
+                    prepare.setString(5, String.valueOf(sqlDate));
+                    prepare.setString(6, "Confirm");
 
                     prepare.executeUpdate();
 
-                    alert.successMessage("Registered Successfully!");
-                    registerClear();
+                    alert.successMessage("Registered Successfully");
 
-                    login_form.setVisible(true);
-                    register_form.setVisible(false);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -197,16 +211,8 @@ public class HospitalManagementController implements Initializable {
         }
     }
 
-    public void registerClear() {
-
-        register_email.clear();
-        register_username.clear();
-        register_password.clear();
-        register_showPassword.clear();
-
-    }
-
-    public void registerShowPassword() {
+    @FXML
+    void registerShowPassword() {
 
         if (register_checkBox.isSelected()) {
             register_showPassword.setText(register_password.getText());
@@ -216,6 +222,37 @@ public class HospitalManagementController implements Initializable {
             register_password.setText(register_showPassword.getText());
             register_showPassword.setVisible(false);
             register_password.setVisible(true);
+        }
+    }
+
+    public void registerDoctorID() {
+        String doctorID = "DID-";
+        int tempID = 0;
+        String sql = "SELECT MAX(id) FROM doctor";
+
+        connect = Database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            if (rs.next()) {
+                tempID = rs.getInt("MAX(id)");
+            }
+
+            if (tempID == 0) {
+                tempID += 1;
+                doctorID += tempID;
+            } else {
+                doctorID += (tempID + 1);
+            }
+
+            register_doctorID.setText(doctorID);
+            register_doctorID.setDisable(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -250,7 +287,6 @@ public class HospitalManagementController implements Initializable {
                 stage.show();
 
 
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -282,19 +318,21 @@ public class HospitalManagementController implements Initializable {
         login_user.getScene().getWindow().hide();
     }
 
-    public void switchForm(ActionEvent event) {
+    @FXML
+    void switchForm(ActionEvent event) {
 
-        if (event.getSource() == login_registerHere) {
-            login_form.setVisible(false);
-            register_form.setVisible(true);
-        } else if (event.getSource() == register_loginHere) {
+        if (event.getSource() == register_loginHere) {
             login_form.setVisible(true);
             register_form.setVisible(false);
+        } else if (event.getSource() == login_registerHere) {
+            login_form.setVisible(false);
+            register_form.setVisible(true);
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userList();
+        registerDoctorID();
     }
 }
