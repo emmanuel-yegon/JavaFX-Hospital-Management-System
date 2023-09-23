@@ -11,7 +11,7 @@ import java.io.IOException;
 public class HospitalManagementApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("hms.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Hms.fxml"));
 
         Scene scene = new Scene(root);
 

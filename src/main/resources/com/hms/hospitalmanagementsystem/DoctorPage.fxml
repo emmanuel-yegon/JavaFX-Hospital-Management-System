@@ -71,12 +71,6 @@
                      </font>
                   </Label>
                   <Label layoutX="140.0" layoutY="123.0" text="Doctor Portal" />
-                  <TextField fx:id="register_showPassword" layoutX="50.0" layoutY="288.0" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@design/PageDesign.css" visible="false">
-                     <styleClass>
-                        <String fx:value="textfield-1" />
-                        <String fx:value="white-bg" />
-                     </styleClass>
-                  </TextField>
                   <CheckBox fx:id="register_checkBox" layoutX="52.0" layoutY="326.0" mnemonicParsing="false" onAction="#registerShowPassword" prefHeight="17.0" prefWidth="110.0" text="Show Password" />
                   <Button fx:id="register_signupBtn" layoutX="50.0" layoutY="354.0" mnemonicParsing="false" onAction="#registerAccount" prefHeight="40.0" prefWidth="250.0" stylesheets="@design/PageDesign.css" text="Sign Up">
                      <styleClass>

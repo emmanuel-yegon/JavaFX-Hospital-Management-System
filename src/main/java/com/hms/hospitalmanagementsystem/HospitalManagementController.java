@@ -109,12 +109,25 @@ public class HospitalManagementController implements Initializable {
                 rs = prepare.executeQuery();
 
                 if (rs.next()) {
+
+                    Data.admin_username = login_username.getText();
+
                     alert.successMessage("Login Successfully!");
+
+                    Parent root = FXMLLoader.load(getClass().getResource("AdminMainForm.fxml"));
+                    Stage stage = new Stage();
+
+                    stage.setTitle("Hospital Management System | Admin Portal");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+
+                    login_loginBtn.getScene().getWindow().hide();
+
                 } else {
                     alert.errorMessage("Incorrect Username/Password");
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }
@@ -238,7 +251,7 @@ public class HospitalManagementController implements Initializable {
 
             try {
 
-                Parent root = FXMLLoader.load(getClass().getResource("hms.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("Hms.fxml"));
                 Stage stage = new Stage();
 
                 stage.setTitle("Hospital Management System");
@@ -250,7 +263,6 @@ public class HospitalManagementController implements Initializable {
                 stage.show();
 
 
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -258,7 +270,6 @@ public class HospitalManagementController implements Initializable {
         } else if (login_user.getSelectionModel().getSelectedItem() == "Doctor Portal") {
 
             try {
-
 
                 Parent root = FXMLLoader.load(getClass().getResource("DoctorPage.fxml"));
                 Stage stage = new Stage();
@@ -276,7 +287,22 @@ public class HospitalManagementController implements Initializable {
             }
 
         } else if (login_user.getSelectionModel().getSelectedItem() == "Patient Portal") {
+            try {
 
+                Parent root = FXMLLoader.load(getClass().getResource("PatientPage.fxml"));
+                Stage stage = new Stage();
+
+                stage.setTitle("Hospital Management System");
+
+                stage.setMinWidth(340);
+                stage.setMinHeight(580);
+
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         login_user.getScene().getWindow().hide();

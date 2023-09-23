@@ -2,7 +2,6 @@ package com.hms.hospitalmanagementsystem;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,17 +16,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DoctorPageController implements Initializable {
-
+public class PatientPageController implements Initializable {
     @FXML
     private CheckBox login_checkBox;
-
-    @FXML
-    private TextField login_doctorID;
 
     @FXML
     private AnchorPane login_form;
@@ -39,7 +33,7 @@ public class DoctorPageController implements Initializable {
     private PasswordField login_password;
 
     @FXML
-    private Hyperlink login_registerHere;
+    private TextField login_patientID;
 
     @FXML
     private TextField login_showPassword;
@@ -50,33 +44,6 @@ public class DoctorPageController implements Initializable {
     @FXML
     private AnchorPane main_form;
 
-    @FXML
-    private CheckBox register_checkBox;
-
-    @FXML
-    private TextField register_doctorID;
-
-    @FXML
-    private TextField register_email;
-
-    @FXML
-    private AnchorPane register_form;
-
-    @FXML
-    private TextField register_fullName;
-
-    @FXML
-    private Hyperlink register_loginHere;
-
-    @FXML
-    private PasswordField register_password;
-
-    @FXML
-    private TextField register_showPassword;
-
-    @FXML
-    private Button register_signupBtn;
-
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet rs;
@@ -86,12 +53,12 @@ public class DoctorPageController implements Initializable {
     @FXML
     void loginAccount() {
 
-        if (login_doctorID.getText().isEmpty()
+        if (login_patientID.getText().isEmpty()
                 || login_password.getText().isEmpty()) {
             alert.errorMessage("Please fill all blank fields");
         } else {
 
-            String sql = "SELECT * FROM doctor WHERE doctor_id = ? AND password = ? AND delete_date IS NULL ";
+            String sql = "SELECT * FROM patient WHERE patient_id = ? AND password = ? AND date_delete IS NULL ";
             connect = Database.connectDB();
 
             try {
@@ -106,7 +73,7 @@ public class DoctorPageController implements Initializable {
                     }
                 }
 
-                String checkStatus = "SELECT status FROM doctor WHERE doctor_id='" + login_doctorID.getText() + "'  AND password ='" + login_password.getText() + "' AND status='Confirm'";
+                String checkStatus = "SELECT status FROM patient WHERE patient_id='" + login_patientID.getText() + "'  AND password ='" + login_password.getText() + "' AND status='Confirm'";
 
                 prepare = connect.prepareStatement(checkStatus);
                 rs = prepare.executeQuery();
@@ -127,7 +94,7 @@ public class DoctorPageController implements Initializable {
                 } else {
 
                     prepare = connect.prepareStatement(sql);
-                    prepare.setString(1, login_doctorID.getText());
+                    prepare.setString(1, login_patientID.getText());
                     prepare.setString(2, login_password.getText());
 
                     rs = prepare.executeQuery();
@@ -135,7 +102,7 @@ public class DoctorPageController implements Initializable {
                     if (rs.next()) {
                         alert.successMessage("Login Successfully!");
                     } else {
-                        alert.errorMessage("Incorrect Doctor ID/Password");
+                        alert.errorMessage("Incorrect Patient ID/Password");
                     }
                 }
 
@@ -144,11 +111,11 @@ public class DoctorPageController implements Initializable {
             }
 
         }
+
     }
 
     @FXML
     void loginShowPassword() {
-
         if (login_checkBox.isSelected()) {
             login_showPassword.setText(login_password.getText());
             login_password.setVisible(false);
@@ -158,113 +125,12 @@ public class DoctorPageController implements Initializable {
             login_password.setVisible(true);
             login_showPassword.setVisible(false);
         }
-
     }
+
 
     @FXML
-    void registerAccount() {
-        if (register_fullName.getText().isEmpty()
-                || register_email.getText().isEmpty()
-                || register_doctorID.getText().isEmpty()
-                || register_password.getText().isEmpty()) {
-            alert.errorMessage("Please fill all blank fields");
-        } else {
+    void switchForm() {
 
-            String checkDoctorID = "SELECT * FROM doctor WHERE doctor_id='" + register_doctorID.getText() + "'";
-
-            connect = Database.connectDB();
-
-            try {
-
-                if (!register_showPassword.isVisible()) {
-                    if (!register_showPassword.getText().equals(register_password.getText())) {
-                        register_showPassword.setText(register_password.getText());
-                    }
-                } else {
-                    if (!register_showPassword.getText().equals(register_password.getText())) {
-                        register_password.setText(register_showPassword.getText());
-                    }
-                }
-
-                prepare = connect.prepareStatement(checkDoctorID);
-                rs = prepare.executeQuery();
-
-                if (rs.next()) {
-                    alert.errorMessage(register_doctorID.getText() + "already  taken");
-                } else if (register_password.getText().length() < 8) {
-                    alert.errorMessage("Invalid password,at least 8 characters needed");
-                } else {
-
-                    String insertData = "INSERT INTO  doctor(full_name,email,doctor_id,password,date,status) VALUES(?,?,?,?,?,?)";
-
-                    prepare = connect.prepareStatement(insertData);
-
-                    Date date = new Date();
-                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-
-                    prepare.setString(1, register_fullName.getText());
-                    prepare.setString(2, register_email.getText());
-                    prepare.setString(3, register_doctorID.getText());
-                    prepare.setString(4, register_password.getText());
-                    prepare.setString(5, String.valueOf(sqlDate));
-                    prepare.setString(6, "Confirm");
-
-                    prepare.executeUpdate();
-
-                    alert.successMessage("Registered Successfully");
-
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    @FXML
-    void registerShowPassword() {
-
-        if (register_checkBox.isSelected()) {
-            register_showPassword.setText(register_password.getText());
-            register_showPassword.setVisible(true);
-            register_password.setVisible(false);
-        } else {
-            register_password.setText(register_showPassword.getText());
-            register_showPassword.setVisible(false);
-            register_password.setVisible(true);
-        }
-    }
-
-    public void registerDoctorID() {
-        String doctorID = "DID-";
-        int tempID = 0;
-        String sql = "SELECT MAX(id) FROM doctor";
-
-        connect = Database.connectDB();
-
-        try {
-
-            prepare = connect.prepareStatement(sql);
-            rs = prepare.executeQuery();
-
-            if (rs.next()) {
-                tempID = rs.getInt("MAX(id)");
-            }
-
-            if (tempID == 0) {
-                tempID += 1;
-                doctorID += tempID;
-            } else {
-                doctorID += (tempID + 1);
-            }
-
-            register_doctorID.setText(doctorID);
-            register_doctorID.setDisable(true);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void userList() {
@@ -280,8 +146,8 @@ public class DoctorPageController implements Initializable {
 
     }
 
-    public void switchPage() {
-
+    @FXML
+    void switchPage() {
         if (login_user.getSelectionModel().getSelectedItem() == "Admin Portal") {
 
             try {
@@ -344,21 +210,8 @@ public class DoctorPageController implements Initializable {
         login_user.getScene().getWindow().hide();
     }
 
-    @FXML
-    void switchForm(ActionEvent event) {
-
-        if (event.getSource() == register_loginHere) {
-            login_form.setVisible(true);
-            register_form.setVisible(false);
-        } else if (event.getSource() == login_registerHere) {
-            login_form.setVisible(false);
-            register_form.setVisible(true);
-        }
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userList();
-        registerDoctorID();
     }
 }
