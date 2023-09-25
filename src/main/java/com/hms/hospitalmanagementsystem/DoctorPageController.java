@@ -133,7 +133,21 @@ public class DoctorPageController implements Initializable {
                     rs = prepare.executeQuery();
 
                     if (rs.next()) {
+
+                        Data.doctor_id = rs.getString("doctor_id");
+                        Data.doctor_name = rs.getString("full_name");
+
                         alert.successMessage("Login Successfully!");
+
+                        Parent root = FXMLLoader.load(getClass().getResource("DoctorMainForm.fxml"));
+                        Stage stage = new Stage();
+
+                        stage.setTitle("Hospital Management System | Doctor Main Form");
+                        stage.setScene(new Scene(root));
+                        stage.show();
+
+                        login_loginBtn.getScene().getWindow().hide();
+
                     } else {
                         alert.errorMessage("Incorrect Doctor ID/Password");
                     }
