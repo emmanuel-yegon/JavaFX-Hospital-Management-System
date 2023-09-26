@@ -21,16 +21,20 @@ public class AppointmentData {
     private String specialized;
     private Date schedule;
 
-    public AppointmentData(Integer appointmentID, String name, String gender, String description,Long mobileNumber,Date date, Date dateModify, Date dateDelete, String status) {
+    public AppointmentData(Integer appointmentID, String name, String gender, String description, String diagnosis, String treatment, Long mobileNumber, Date date, Date dateModify, Date dateDelete, String status,String address,Date schedule) {
         this.appointmentID = appointmentID;
         this.name = name;
         this.gender = gender;
         this.description = description;
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
         this.mobileNumber = mobileNumber;
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
         this.status = status;
+        this.address = address;
+        this.schedule = schedule;
     }
 
     public Integer getAppointmentID() {
@@ -49,6 +53,13 @@ public class AppointmentData {
         return description;
     }
 
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public String getTreatment() {
+        return treatment;
+    }
 
     public Long getMobileNumber() {
         return mobileNumber;
@@ -70,4 +81,11 @@ public class AppointmentData {
         return status;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public Date getSchedule() {
+        return schedule;
+    }
 }

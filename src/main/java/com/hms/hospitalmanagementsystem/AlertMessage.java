@@ -30,7 +30,6 @@ public class AlertMessage {
         alert.setTitle("Confirmation Message");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
         Optional<ButtonType> option = alert.showAndWait();
 
         if (option.get().equals(ButtonType.OK)){

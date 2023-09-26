@@ -80,3 +80,21 @@
     -fx-border-width: .3px;
     -fx-font-family: Tahoma;
 }
+
+.textfield-2:focused{
+   -fx-border-color: linear-gradient(to bottom right, #a413a1, #64308e);
+   -fx-border-width:  1px;
+}
+
+.search{
+   -fx-border-color: #000;
+   -fx-border-width: .3px;
+   -fx-font-family: Tahoma;
+   -fx-padding: 0 0 0 25px;
+   -fx-background-color: transparent;
+}
+
+.search:focused{
+  -fx-border-color: linear-gradient(to bottom right, #a413a1, #64308e);
+  -fx-border-width:  1px;
+}

@@ -5,13 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -45,7 +49,7 @@ public class DoctorMainFormController implements Initializable {
     private TextField appointment_diagnosis;
 
     @FXML
-    private ComboBox<?> appointment_gender;
+    private ComboBox<String> appointment_gender;
 
     @FXML
     private Button appointment_insertBtn;
@@ -57,7 +61,7 @@ public class DoctorMainFormController implements Initializable {
     private TextField appointment_name;
 
     @FXML
-    private ComboBox<?> appointment_status;
+    private ComboBox<String> appointment_status;
 
     @FXML
     private TextField appointment_treatment;
@@ -198,7 +202,7 @@ public class DoctorMainFormController implements Initializable {
     private AnchorPane patients_form;
 
     @FXML
-    private ComboBox<?> patients_gender;
+    private ComboBox<String> patients_gender;
 
     @FXML
     private TextField patients_mobileNumber;
@@ -231,6 +235,150 @@ public class DoctorMainFormController implements Initializable {
     private ResultSet rs;
     private final AlertMessage alert = new AlertMessage();
 
+    public void patientConfirmBtn() {
+
+        if (patients_patientID.getText().isEmpty()
+                || patients_patientName.getText().isEmpty()
+                || patients_gender.getSelectionModel().getSelectedItem() == null
+                || patients_mobileNumber.getText().isEmpty()
+                || patients_password.getText().isEmpty()
+                || patients_address.getText().isEmpty()) {
+            alert.errorMessage("Please fill all blank fields!");
+        } else {
+
+            Date date = new Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+            patients_PA_patientID.setText(patients_patientID.getText());
+            patients_PA_password.setText(patients_password.getText());
+            patients_PA_dateCreated.setText(String.valueOf(sqlDate));
+
+            patients_PI_patientName.setText(patients_patientName.getText());
+            patients_PI_gender.setText(patients_gender.getSelectionModel().getSelectedItem());
+            patients_PI_mobileNumber.setText(patients_mobileNumber.getText());
+            patients_PI_address.setText(patients_address.getText());
+
+        }
+    }
+
+    public void patientAddBtn() {
+
+        if (patients_PA_patientID.getText().isEmpty()
+                || patients_PA_password.getText().isEmpty()
+                || patients_PA_dateCreated.getText().isEmpty()
+                || patients_PI_patientName.getText().isEmpty()
+                || patients_PI_gender.getText().isEmpty()
+                || patients_PI_mobileNumber.getText().isEmpty()
+                || patients_PI_address.getText().isEmpty()) {
+            alert.errorMessage("Something went wrong");
+        } else {
+
+            Database.connectDB();
+
+            try {
+                String doctorName = "";
+                String doctorSpecialized = "";
+
+                String getDoctor = "SELECT * FROM doctor WHERE doctor_id='"
+                        + nav_adminID.getText() + "'";
+
+                statement = connect.createStatement();
+                rs = statement.executeQuery(getDoctor);
+
+                if (rs.next()) {
+                    doctorName = rs.getString("full_name");
+                    doctorSpecialized = rs.getString("specialized");
+                }
+
+                String checkPatientID = "SELECT * FROM patient WHERE patient_id='"
+                        + patients_PA_patientID.getText() + "'";
+
+                statement = connect.createStatement();
+                rs = statement.executeQuery(checkPatientID);
+
+                if (rs.next()) {
+                    alert.errorMessage(patients_PA_patientID.getText() + "already exist");
+                } else {
+                    String insertData = "INSERT INTO patient(patient_id,password,full_name,mobile_number," +
+                            "address,doctor,specialized,date," +
+                            "status) VALUES(?,?,?,?,?,?,?,?,?)";
+
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare = connect.prepareStatement(insertData);
+
+                    prepare.setString(1, patients_PA_patientID.getText());
+                    prepare.setString(2, patients_PA_password.getText());
+                    prepare.setString(3, patients_PI_patientName.getText());
+                    prepare.setString(4, patients_PI_mobileNumber.getText());
+                    prepare.setString(5, patients_PI_address.getText());
+                    prepare.setString(6, nav_adminID.getText());
+                    prepare.setString(7, doctorSpecialized);
+                    prepare.setString(8, "" + sqlDate);
+                    prepare.setString(9, "Confirm");
+
+                    prepare.executeUpdate();
+
+                    alert.successMessage("Added successfully!");
+
+                    patientClearFields();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void patientRecordBtn() {
+
+        try {
+
+            Parent root = FXMLLoader.load(getClass().getResource("RecordPageForm.fxml"));
+            Stage stage = new Stage();
+
+            stage.setTitle("Hospital Management System | Record of Patients");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void patientClearFields() {
+
+        patients_patientID.clear();
+        patients_patientName.clear();
+        patients_gender.getSelectionModel().clearSelection();
+        patients_mobileNumber.clear();
+        patients_password.clear();
+        patients_address.clear();
+
+        patients_PA_patientID.setText("");
+        patients_PA_password.setText("");
+        patients_PA_dateCreated.setText("");
+
+        patients_PI_patientName.setText("");
+        patients_PI_gender.setText("");
+        patients_PI_mobileNumber.setText("");
+        patients_PI_address.setText("");
+
+    }
+
+    private void patientGenderList() {
+
+        List<String> listG = new ArrayList<>();
+
+        for (String data : Data.gender) {
+            listG.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableList(listG);
+        patients_gender.setItems(listData);
+
+    }
 
     public void appointmentInsertBtn() {
 
@@ -243,8 +391,7 @@ public class DoctorMainFormController implements Initializable {
                 || appointment_status.getSelectionModel().getSelectedItem() == null
                 || appointment_schedule.getValue() == null) {
             alert.errorMessage("Please fill all  blank fields!");
-        }
-        else {
+        } else {
             String checkAppointmentID = "SELECT * FROM appointment WHERE appointment_id ='"
                     + appointment_appointmentID.getText() + "'";
             connect = Database.connectDB();
@@ -293,16 +440,120 @@ public class DoctorMainFormController implements Initializable {
 
                     appointmentShowData();
                     apppointmentAppointmentID();
+                    appointmentClearBtn();
 
                     alert.successMessage("Successfully added!");
 
                 }
+                apppointmentAppointmentID();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+    }
+
+    public void appointmentUpdateBtn() {
+
+        if (appointment_appointmentID.getText().isEmpty()
+                || appointment_name.getText().isEmpty()
+                || appointment_gender.getSelectionModel().getSelectedItem() == null
+                || appointment_description.getText().isEmpty()
+                || appointment_mobileNumber.getText().isEmpty()
+                || appointment_address.getText().isEmpty()
+                || appointment_status.getSelectionModel().getSelectedItem() == null
+                || appointment_schedule.getValue() == null) {
+            alert.errorMessage("Please fill all  blank fields!");
+        } else {
+
+            java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
+
+            String updateData = "UPDATE appointment SET name='"
+                    + appointment_name.getText() + "', gender='"
+                    + appointment_gender.getSelectionModel().getSelectedItem() + "', mobile_number='"
+                    + appointment_mobileNumber.getText() + "',description='"
+                    + appointment_description.getText() + "',address='"
+                    + appointment_address.getText() + "',status='"
+                    + appointment_status.getSelectionModel().getSelectedItem() + "',schedule='"
+                    + appointment_schedule.getValue() + "', date_modify ='"
+                    + sqlDate + "'WHERE appointment_id='"
+                    + appointment_appointmentID.getText() + "'";
+
+            connect = Database.connectDB();
+
+            try {
+
+                if (alert.confirmationMessage("Are you sure you want to UPDATE Appointment ID:"
+                        + appointment_appointmentID.getText() + "?")) {
+
+                    prepare = connect.prepareStatement(updateData);
+                    prepare.executeUpdate();
+
+                    appointmentShowData();
+                    apppointmentAppointmentID();
+                    appointmentClearBtn();
+
+                    alert.successMessage("Successfully Updated!");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void appointmentDeleteBtn() {
+
+        if (appointment_appointmentID.getText().isEmpty()) {
+            alert.errorMessage("Please select  the item first!");
+        } else {
+
+            String updateData = "UPDATE appointment SET date_delete = ? WHERE appointment_id='"
+                    + appointment_appointmentID.getText() + "'";
+
+            connect = Database.connectDB();
+
+            try {
+
+                java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
+
+                if (alert.confirmationMessage("Are yo sure you want to DELETE Appointment ID: "
+                        + appointment_appointmentID.getText() + "?")) {
+
+                    prepare = connect.prepareStatement(updateData);
+                    prepare.setString(1, String.valueOf(sqlDate));
+                    prepare.executeUpdate();
+
+                    appointmentShowData();
+                    apppointmentAppointmentID();
+                    appointmentClearBtn();
+
+                    alert.successMessage("Successfully Deleted!");
+                } else {
+                    alert.errorMessage("Cancelled.");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void appointmentClearBtn() {
+
+        appointment_appointmentID.clear();
+        appointment_name.clear();
+        appointment_gender.getSelectionModel().clearSelection();
+        appointment_mobileNumber.clear();
+        appointment_description.clear();
+        appointment_diagnosis.clear();
+        appointment_treatment.clear();
+        appointment_address.clear();
+        appointment_status.getSelectionModel().clearSelection();
+        appointment_schedule.setValue(null);
+
+        apppointmentAppointmentID();
     }
 
     private Integer appointmentID;
@@ -381,14 +632,12 @@ public class DoctorMainFormController implements Initializable {
             while (rs.next()) {
 
                 appData = new AppointmentData(rs.getInt("appointment_id")
-                        , rs.getString("name")
-                        , rs.getString("gender")
-                        , rs.getString("description")
-                        , rs.getLong("mobile_number")
-                        , rs.getDate("date")
-                        , rs.getDate("date_modify")
-                        , rs.getDate("date_delete")
-                        , rs.getString("status"));
+                        , rs.getString("name"), rs.getString("gender")
+                        , rs.getString("description"), rs.getString("diagnosis")
+                        , rs.getString("treatment"), rs.getLong("mobile_number")
+                        , rs.getDate("date"), rs.getDate("date_modify")
+                        , rs.getDate("date_delete"), rs.getString("status")
+                        , rs.getString("address"), rs.getDate("schedule"));
 
                 listData.add(appData);
 
@@ -416,6 +665,25 @@ public class DoctorMainFormController implements Initializable {
         appointments_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         appointments_tableView.setItems(appointmentListData);
+
+    }
+
+    public void appointmentSelect() {
+        AppointmentData appData = appointments_tableView.getSelectionModel().getSelectedItem();
+        int num = appointments_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) return;
+
+        appointment_appointmentID.setText("" + appData.getAppointmentID());
+        appointment_name.setText(appData.getName());
+        appointment_gender.getSelectionModel().select(appData.getGender());
+        appointment_mobileNumber.setText("" + appData.getMobileNumber());
+        appointment_description.setText("" + appData.getDescription());
+        appointment_diagnosis.setText(appData.getDiagnosis());
+        appointment_treatment.setText(appData.getTreatment());
+        appointment_address.setText(appData.getAddress());
+        appointment_status.getSelectionModel().select(appData.getStatus());
+//        appointment_schedule.setValue(appData.getSchedule());
 
     }
 
@@ -477,5 +745,7 @@ public class DoctorMainFormController implements Initializable {
         appointmentGenderList();
         appointmentStatusList();
         apppointmentAppointmentID();
+
+        patientGenderList();
     }
 }
