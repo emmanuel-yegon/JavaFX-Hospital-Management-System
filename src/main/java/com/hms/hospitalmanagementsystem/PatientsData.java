@@ -20,8 +20,10 @@ public class PatientsData {
     private Date dateModify;
     private Date dateDelete;
     private String status;
+    private String gender;
 
-    public PatientsData(Integer id, Integer patientID, String password, String fullName,
+
+    public PatientsData(Integer id, Integer patientID, String password, String fullName,String gender,
                         Long mobileNumber, String address, String image, String description,
                         String diagnosis, String treatement, String doctor, String specialized,
                         Date date, Date dateModify, Date dateDelete, String status) {
@@ -29,6 +31,7 @@ public class PatientsData {
         this.patientID = patientID;
         this.password = password;
         this.fullName = fullName;
+        this.gender = gender;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.image = image;
@@ -43,16 +46,18 @@ public class PatientsData {
         this.status = status;
     }
 
-    public PatientsData(Integer id,Integer patientID,String fullName, Long mobileNumber,
-                        String address,Date date, Date dateModify, Date dateDelete) {
-        this.id=id;
+    public PatientsData(Integer id, Integer patientID, String fullName,String gender, Long mobileNumber,
+                        String address, Date date, Date dateModify, Date dateDelete, String status) {
+        this.id = id;
         this.patientID = patientID;
         this.fullName = fullName;
+        this.gender = gender;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -69,6 +74,10 @@ public class PatientsData {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public Long getMobileNumber() {
@@ -118,4 +127,6 @@ public class PatientsData {
     public String getStatus() {
         return status;
     }
+
+
 }

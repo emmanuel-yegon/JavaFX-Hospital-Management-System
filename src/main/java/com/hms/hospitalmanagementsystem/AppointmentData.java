@@ -37,6 +37,14 @@ public class AppointmentData {
         this.schedule = schedule;
     }
 
+    public AppointmentData(Integer appointmentID,String name,String description, Date date,String status) {
+        this.appointmentID = appointmentID;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.status = status;
+    }
+
     public Integer getAppointmentID() {
         return appointmentID;
     }
