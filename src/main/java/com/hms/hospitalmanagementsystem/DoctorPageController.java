@@ -91,7 +91,7 @@ public class DoctorPageController implements Initializable {
             alert.errorMessage("Please fill all blank fields");
         } else {
 
-            String sql = "SELECT * FROM doctor WHERE doctor_id = ? AND password = ? AND delete_date IS NULL ";
+            String sql = "SELECT * FROM doctor WHERE doctor_id = ? AND password = ? AND date_delete IS NULL ";
             connect = Database.connectDB();
 
             try {

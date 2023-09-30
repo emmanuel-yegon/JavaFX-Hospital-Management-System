@@ -13,7 +13,7 @@ public class PatientsData {
     private String image;
     private String description;
     private String diagnosis;
-    private String treatement;
+    private String treatment;
     private String doctor;
     private String specialized;
     private Date date;
@@ -23,21 +23,20 @@ public class PatientsData {
     private String gender;
 
 
-    public PatientsData(Integer id, Integer patientID, String password, String fullName,String gender,
+    public PatientsData(Integer id, Integer patientID, String password, String fullName,
                         Long mobileNumber, String address, String image, String description,
-                        String diagnosis, String treatement, String doctor, String specialized,
+                        String diagnosis, String treatment, String doctor, String specialized,
                         Date date, Date dateModify, Date dateDelete, String status) {
         this.id = id;
         this.patientID = patientID;
         this.password = password;
         this.fullName = fullName;
-        this.gender = gender;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.image = image;
         this.description = description;
         this.diagnosis = diagnosis;
-        this.treatement = treatement;
+        this.treatment = treatment;
         this.doctor = doctor;
         this.specialized = specialized;
         this.date = date;
@@ -51,7 +50,7 @@ public class PatientsData {
         this.id = id;
         this.patientID = patientID;
         this.fullName = fullName;
-        this.gender = gender;
+        this.gender=gender;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.date = date;
@@ -101,7 +100,7 @@ public class PatientsData {
     }
 
     public String getTreatement() {
-        return treatement;
+        return treatment;
     }
 
     public String getDoctor() {
