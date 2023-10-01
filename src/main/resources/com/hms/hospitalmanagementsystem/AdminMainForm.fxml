@@ -102,7 +102,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="dashboard_form" layoutX="301.0" layoutY="99.0" prefHeight="560.0" prefWidth="885.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dashboard_form" layoutX="301.0" layoutY="99.0" prefHeight="560.0" prefWidth="885.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="9.0" layoutY="10.0" prefHeight="159.0" prefWidth="867.0" stylesheets="@design/MainFormDesign.css" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="10.0">
                                  <styleClass>
@@ -298,18 +298,18 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="patients_tableView" layoutX="14.0" layoutY="59.0" prefHeight="468.0" prefWidth="837.0" stylesheets="@design/MainFormDesign.css" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="59.0">
+                                    <TableView fx:id="patients_tableView" layoutX="10.0" layoutY="59.0" prefHeight="468.0" prefWidth="846.0" stylesheets="@design/MainFormDesign.css" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="59.0">
                                        <columns>
-                                          <TableColumn fx:id="patients_col_patientID" prefWidth="75.0" text="Patient ID" />
-                                          <TableColumn fx:id="patients_col_name" prefWidth="75.0" text="Name" />
-                                          <TableColumn fx:id="patients_col_gender" prefWidth="75.0" text="Gender" />
-                                          <TableColumn fx:id="patients_col_contactNumber" prefWidth="106.0" text="Contact Number" />
-                                          <TableColumn fx:id="patients_col_description" prefWidth="99.0" text="Description" />
-                                          <TableColumn fx:id="patients_col_date" prefWidth="67.0" text="Date" />
-                                          <TableColumn fx:id="patients_col_dateModify" prefWidth="91.0" text="Date Modify" />
-                                          <TableColumn fx:id="patients_col_dateDelete" prefWidth="91.0" text="Date Delete" />
-                                          <TableColumn fx:id="patients_col_status" prefWidth="82.0" text="Status" />
-                                          <TableColumn fx:id="patients_col_action" prefWidth="90.0" text="Action" />
+                                          <TableColumn fx:id="patients_col_patientID" prefWidth="63.0" text="Patient ID" />
+                                          <TableColumn fx:id="patients_col_name" prefWidth="87.0" text="Name" />
+                                          <TableColumn fx:id="patients_col_gender" prefWidth="56.0" text="Gender" />
+                                          <TableColumn fx:id="patients_col_contactNumber" prefWidth="76.0" text="Contact No#" />
+                                          <TableColumn fx:id="patients_col_description" prefWidth="108.0" text="Description" />
+                                          <TableColumn fx:id="patients_col_date" prefWidth="68.0" text="Date" />
+                                          <TableColumn fx:id="patients_col_dateModify" prefWidth="77.0" text="Date Modify" />
+                                          <TableColumn fx:id="patients_col_dateDelete" prefWidth="86.0" text="Date Delete" />
+                                          <TableColumn fx:id="patients_col_status" prefWidth="74.0" text="Status" />
+                                          <TableColumn fx:id="patients_col_action" prefWidth="152.0" text="Action" />
                                        </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -319,7 +319,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="appointments_form" layoutX="10.0" layoutY="10.0" prefHeight="560.0" prefWidth="885.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="appointments_form" layoutX="10.0" layoutY="10.0" prefHeight="560.0" prefWidth="885.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="539.0" prefWidth="865.0" stylesheets="@design/MainFormDesign.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0">
                                  <styleClass>
@@ -333,7 +333,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TableView layoutX="14.0" layoutY="59.0" prefHeight="466.0" prefWidth="836.0" stylesheets="@design/MainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="59.0">
+                                    <TableView fx:id="appointments_tableView" layoutX="14.0" layoutY="59.0" prefHeight="466.0" prefWidth="836.0" stylesheets="@design/MainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="59.0">
                                        <columns>
                                           <TableColumn fx:id="appointments_appointmentID" prefWidth="98.0" text="Appointment ID" />
                                           <TableColumn fx:id="appointments_name" prefWidth="78.0" text="Name" />

@@ -23,7 +23,7 @@ public class PatientsData {
     private String gender;
 
 
-    public PatientsData(Integer id, Integer patientID, String password, String fullName,
+    public PatientsData(Integer id, Integer patientID, String password, String fullName,String gender,
                         Long mobileNumber, String address, String image, String description,
                         String diagnosis, String treatment, String doctor, String specialized,
                         Date date, Date dateModify, Date dateDelete, String status) {
@@ -31,6 +31,7 @@ public class PatientsData {
         this.patientID = patientID;
         this.password = password;
         this.fullName = fullName;
+        this.gender=gender;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.image = image;

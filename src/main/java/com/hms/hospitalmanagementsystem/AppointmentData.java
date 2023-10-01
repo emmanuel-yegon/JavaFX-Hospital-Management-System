@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class AppointmentData {
 
+    private Integer id;
     private Integer appointmentID;
     private Integer patientID;
     private String name;
@@ -21,28 +22,53 @@ public class AppointmentData {
     private String specialized;
     private Date schedule;
 
-    public AppointmentData(Integer appointmentID, String name, String gender, String description, String diagnosis, String treatment, Long mobileNumber, Date date, Date dateModify, Date dateDelete, String status,String address,Date schedule) {
+    public AppointmentData(Integer id, Integer appointmentID, String name, String gender, Long mobileNumber,String description,
+                           String diagnosis, String treatment,String address, Date date, Date dateModify,
+                           Date dateDelete, String status,Date schedule) {
+        this.id = id;
         this.appointmentID = appointmentID;
         this.name = name;
         this.gender = gender;
+        this.mobileNumber = mobileNumber;
         this.description = description;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
-        this.mobileNumber = mobileNumber;
+        this.address = address;
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
         this.status = status;
-        this.address = address;
         this.schedule = schedule;
     }
 
-    public AppointmentData(Integer appointmentID,String name,String description, Date date,String status) {
+    public AppointmentData(Integer appointmentID, String name, String gender, Long mobileNumber,String description,
+                           String diagnosis, String treatment, String address, Date date, Date dateModify,
+                           Date dateDelete, String status, Date schedule) {
+        this.appointmentID = appointmentID;
+        this.name = name;
+        this.gender = gender;
+        this.mobileNumber = mobileNumber;
+        this.description = description;
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
+        this.address = address;
+        this.date = date;
+        this.dateModify = dateModify;
+        this.dateDelete = dateDelete;
+        this.status = status;
+        this.schedule = schedule;
+    }
+
+    public AppointmentData(Integer appointmentID, String name, String description, Date date, String status) {
         this.appointmentID = appointmentID;
         this.name = name;
         this.description = description;
         this.date = date;
         this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Integer getAppointmentID() {

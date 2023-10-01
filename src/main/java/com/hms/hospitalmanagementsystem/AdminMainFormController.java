@@ -31,195 +31,142 @@ import java.util.ResourceBundle;
 
 public class AdminMainFormController implements Initializable {
 
-    @FXML
-    private TableColumn<?, ?> appointments_action;
+    public ObservableList<PatientsData> patientListData;
 
     @FXML
-    private TableColumn<?, ?> appointments_appointmentID;
-
+    private TableColumn<AppointmentData, String> appointments_action;
+    @FXML
+    private TableColumn<AppointmentData, String> appointments_appointmentID;
     @FXML
     private Button appointments_btn;
-
     @FXML
-    private TableColumn<?, ?> appointments_contact;
-
+    private TableColumn<AppointmentData, String> appointments_contact;
     @FXML
-    private TableColumn<?, ?> appointments_date;
-
+    private TableColumn<AppointmentData, String> appointments_date;
     @FXML
-    private TableColumn<?, ?> appointments_dateDelete;
-
+    private TableColumn<AppointmentData, String> appointments_dateDelete;
     @FXML
-    private TableColumn<?, ?> appointments_dateModify;
-
+    private TableColumn<AppointmentData, String> appointments_dateModify;
     @FXML
-    private TableColumn<?, ?> appointments_description;
-
+    private TableColumn<AppointmentData, String> appointments_description;
     @FXML
     private AnchorPane appointments_form;
+    @FXML
+    private TableColumn<AppointmentData, String> appointments_gender;
+    @FXML
+    private TableColumn<AppointmentData, String> appointments_name;
+    @FXML
+    private TableColumn<AppointmentData, String> appointments_status;
 
     @FXML
-    private TableColumn<?, ?> appointments_gender;
-
-    @FXML
-    private TableColumn<?, ?> appointments_name;
-
-    @FXML
-    private TableColumn<?, ?> appointments_status;
+    private TableView<AppointmentData> appointments_tableView;
 
     @FXML
     private Label current_form;
-
     @FXML
     private Label dashboard_AD;
-
     @FXML
     private Label dashboard_AP;
-
     @FXML
     private Label dashboard_TA;
-
     @FXML
     private Label dashboard_TP;
-
     @FXML
     private Button dashboard_btn;
-
     @FXML
     private BarChart<?, ?> dashboard_chart_DD;
-
     @FXML
     private AreaChart<?, ?> dashboard_chart_PD;
-
     @FXML
     private TableColumn<?, ?> dashboard_col_doctorID;
-
     @FXML
     private TableColumn<?, ?> dashboard_col_name;
-
     @FXML
     private TableColumn<?, ?> dashboard_col_specialized;
-
     @FXML
     private TableColumn<?, ?> dashboard_col_status;
-
     @FXML
     private AnchorPane dashboard_form;
-
     @FXML
     private TableView<?> dashboard_tableView;
-
     @FXML
     private Label date_time;
-
     @FXML
     private Button doctors_btn;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_action;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_address;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_contactNumber;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_doctorID;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_email;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_gender;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_name;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_specialization;
-
     @FXML
     private TableColumn<DoctorData, String> doctors_col_status;
-
     @FXML
     private AnchorPane doctors_form;
-
     @FXML
     private TableView<DoctorData> doctors_tableView;
-
     @FXML
     private AnchorPane main_form;
-
     @FXML
     private Label nav_adminID;
-
     @FXML
     private Label nav_username;
-
     @FXML
     private Button patients_btn;
-
     @FXML
-    private TableColumn<PatientsData,String> patients_col_action;
-
+    private TableColumn<PatientsData, String> patients_col_action;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_contactNumber;
-
+    private TableColumn<PatientsData, String> patients_col_contactNumber;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_date;
-
+    private TableColumn<PatientsData, String> patients_col_date;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_dateDelete;
-
+    private TableColumn<PatientsData, String> patients_col_dateDelete;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_dateModify;
-
+    private TableColumn<PatientsData, String> patients_col_dateModify;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_description;
-
+    private TableColumn<PatientsData, String> patients_col_description;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_gender;
-
+    private TableColumn<PatientsData, String> patients_col_gender;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_name;
-
+    private TableColumn<PatientsData, String> patients_col_name;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_patientID;
-
+    private TableColumn<PatientsData, String> patients_col_patientID;
     @FXML
-    private TableColumn<PatientsData,String> patients_col_status;
-
+    private TableColumn<PatientsData, String> patients_col_status;
     @FXML
     private AnchorPane patients_form;
-
     @FXML
     private TableView<PatientsData> patients_tableView;
-
     @FXML
     private Button payment_btn;
-
     @FXML
     private Button profile_btn;
-
     @FXML
     private Circle top_profile;
-
     @FXML
     private Label top_username;
-
     private Connection connect;
     private PreparedStatement prepare;
     private Statement statement;
     private ResultSet rs;
-
-    private AlertMessage alert = new AlertMessage();
+    private final AlertMessage alert = new AlertMessage();
+    private ObservableList<DoctorData> doctorListData;
 
     public ObservableList<DoctorData> doctorGetData() {
 
         ObservableList<DoctorData> listData = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM doctor WHERE date_delete IS NULL";
+        String sql = "SELECT * FROM doctor";
 
         connect = Database.connectDB();
 
@@ -246,8 +193,6 @@ public class AdminMainFormController implements Initializable {
         }
         return listData;
     }
-
-    private ObservableList<DoctorData> doctorListData;
 
     public void doctorDisplayData() {
         doctorListData = doctorGetData();
@@ -374,11 +319,116 @@ public class AdminMainFormController implements Initializable {
         doctors_tableView.setItems(doctorListData);
     }
 
+    public void patientActionButtons() {
+
+        connect = Database.connectDB();
+        patientListData = patientGetData();
+
+        Callback<TableColumn<PatientsData, String>, TableCell<PatientsData, String>> cellFactory = (TableColumn<PatientsData, String> param) -> {
+            final TableCell<PatientsData, String> cell = new TableCell<PatientsData, String>() {
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        Button editButton = new Button("Edit");
+                        Button removeButton = new Button("Delete");
+
+                        editButton.setStyle("-fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);\n" +
+                                "   -fx-cursor: hand;\n" +
+                                "   -fx-text-fill: #fff;\n" +
+                                "   -fx-font-size: 14px;\n" +
+                                "   -fx-font-family: Arial;");
+
+                        removeButton.setStyle("-fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);\n" +
+                                "   -fx-cursor: hand;\n" +
+                                "   -fx-text-fill: #fff;\n" +
+                                "   -fx-font-size: 14px;\n" +
+                                "   -fx-font-family: Arial;");
+
+                        editButton.setOnAction((ActionEvent event) -> {
+                            try {
+                                connect = Database.connectDB();
+                                PatientsData pData = patients_tableView.getSelectionModel().getSelectedItem();
+                                int num = patients_tableView.getSelectionModel().getSelectedIndex();
+
+                                if ((num - 1) < -1) {
+                                    alert.errorMessage("Please select item first");
+                                }
+
+                                Data.temp_patientID = pData.getPatientID();
+                                Data.temp_address = pData.getAddress();
+                                Data.temp_name = pData.getFullName();
+                                Data.temp_gender = pData.getGender();
+                                Data.temp_number = pData.getMobileNumber();
+                                Data.temp_status = pData.getStatus();
+
+
+                                Parent root = FXMLLoader.load(getClass().getResource("EditPatientForm.fxml"));
+                                Stage stage = new Stage();
+
+                                stage.setScene(new Scene(root));
+                                stage.show();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        removeButton.setOnAction((ActionEvent evemt) -> {
+                            connect = Database.connectDB();
+                            PatientsData pData = patients_tableView.getSelectionModel().getSelectedItem();
+                            int num = patients_tableView.getSelectionModel().getSelectedIndex();
+
+                            if ((num - 1) < -1) {
+                                alert.errorMessage("Please select item first");
+                            }
+
+                            String deleteData = "UPDATE patient SET date_delete = ? WHERE patient_id='"
+                                    + pData.getPatientID() + "'";
+
+                            try {
+                                if (alert.confirmationMessage("Are you sure you want to delete Patient ID: " + pData.getPatientID() + "?")) {
+                                    prepare = connect.prepareStatement(deleteData);
+                                    Date date = new Date();
+                                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                                    prepare.setString(1, String.valueOf(sqlDate));
+                                    prepare.executeUpdate();
+
+
+                                    alert.successMessage("Deleted successfully!");
+                                    patientDisplayData();
+
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        HBox manageBtn = new HBox(editButton, removeButton);
+                        manageBtn.setAlignment(Pos.CENTER);
+                        manageBtn.setSpacing(5);
+                        setGraphic(manageBtn);
+                        setText(null);
+                    }
+                }
+            };
+            doctorDisplayData();
+            return cell;
+        };
+        patients_col_action.setCellFactory(cellFactory);
+        patients_tableView.setItems(patientListData);
+    }
+
     public ObservableList<PatientsData> patientGetData() {
 
         ObservableList<PatientsData> listData = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM patient WHERE date_delete IS NULL";
+        String sql = "SELECT * FROM patient ";
 
         try {
             prepare = connect.prepareStatement(sql);
@@ -389,12 +439,13 @@ public class AdminMainFormController implements Initializable {
             while (rs.next()) {
                 pData = new PatientsData(rs.getInt("id"), rs.getInt("patient_id")
                         , rs.getString("password"), rs.getString("full_name")
+                        , rs.getString("gender")
                         , rs.getLong("mobile_number"), rs.getString("address")
                         , rs.getString("image"), rs.getString("description")
                         , rs.getString("diagnosis"), rs.getString("treatment")
                         , rs.getString("doctor"), rs.getString("specialized")
                         , rs.getDate("date"), rs.getDate("date_modify")
-                        ,rs.getDate("date_delete"), rs.getString("status"));
+                        , rs.getDate("date_delete"), rs.getString("status"));
 
                 listData.add(pData);
 
@@ -406,9 +457,7 @@ public class AdminMainFormController implements Initializable {
         return listData;
     }
 
-    public ObservableList<PatientsData> patientListData;
-
-    public void patientDisplayData(){
+    public void patientDisplayData() {
         patientListData = patientGetData();
 
         patients_col_patientID.setCellValueFactory(new PropertyValueFactory<>("patientID"));
@@ -422,6 +471,65 @@ public class AdminMainFormController implements Initializable {
         patients_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         patients_tableView.setItems(patientListData);
+    }
+
+    public ObservableList<AppointmentData> appointmentGetData() {
+
+        ObservableList<AppointmentData> listData = FXCollections.observableArrayList();
+
+        String sqlA = "SELECT * FROM appointment ";
+
+        connect = Database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sqlA);
+            rs = prepare.executeQuery();
+
+            AppointmentData aData;
+
+            while (rs.next()) {
+                aData = new AppointmentData(rs.getInt("id")
+                        , rs.getInt("appointment_id")
+                        , rs.getString("name")
+                        , rs.getString("gender")
+                        , rs.getLong("mobile_number")
+                        , rs.getString("description")
+                        , rs.getString("diagnosis")
+                        , rs.getString("treatment")
+                        , rs.getString("address")
+                        , rs.getDate("date")
+                        , rs.getDate("date_modify")
+                        , rs.getDate("date_delete")
+                        , rs.getString("status")
+                        , rs.getDate("schedule"));
+
+                listData.add(aData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listData;
+    }
+
+    private ObservableList<AppointmentData> appointmentListData;
+
+    public void appointmentDisplayData() {
+        appointmentListData = appointmentGetData();
+
+        appointments_appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointments_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        appointments_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        appointments_contact.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
+        appointments_description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointments_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        appointments_dateModify.setCellValueFactory(new PropertyValueFactory<>("dateModify"));
+        appointments_dateDelete.setCellValueFactory(new PropertyValueFactory<>("dateDelete"));
+        appointments_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        appointments_tableView.setItems(appointmentListData);
+
     }
 
     public void switchForm(ActionEvent event) {
@@ -448,12 +556,15 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
 
             patientDisplayData();
+            patientActionButtons();
 
         } else if (event.getSource() == appointments_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
             patients_form.setVisible(false);
             appointments_form.setVisible(true);
+
+            appointmentDisplayData();
         }
 
     }
@@ -511,5 +622,8 @@ public class AdminMainFormController implements Initializable {
         doctorActionButtons();
 
         patientDisplayData();
+        patientActionButtons();
+
+        appointmentDisplayData();
     }
 }

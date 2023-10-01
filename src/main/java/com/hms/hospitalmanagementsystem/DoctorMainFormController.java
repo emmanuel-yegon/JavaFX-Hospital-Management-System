@@ -145,19 +145,19 @@ public class DoctorMainFormController implements Initializable {
     private AreaChart<?, ?> dashboard_chart_NP;
 
     @FXML
-    private TableColumn<AppointmentData,String> dashboard_col_appointmentDate;
+    private TableColumn<AppointmentData, String> dashboard_col_appointmentDate;
 
     @FXML
-    private TableColumn<AppointmentData,String> dashboard_col_appointmentID;
+    private TableColumn<AppointmentData, String> dashboard_col_appointmentID;
 
     @FXML
-    private TableColumn<AppointmentData,String> dashboard_col_name;
+    private TableColumn<AppointmentData, String> dashboard_col_name;
 
     @FXML
-    private TableColumn<AppointmentData,String> dashboard_col_description;
+    private TableColumn<AppointmentData, String> dashboard_col_description;
 
     @FXML
-    private TableColumn<AppointmentData,String> dashboard_col_status;
+    private TableColumn<AppointmentData, String> dashboard_col_status;
 
     @FXML
     private AnchorPane dashboard_form;
@@ -379,12 +379,12 @@ public class DoctorMainFormController implements Initializable {
         }
     }
 
-    public ObservableList<AppointmentData> dashboardAppointmentTableView(){
+    public ObservableList<AppointmentData> dashboardAppointmentTableView() {
 
         ObservableList<AppointmentData> listData = FXCollections.observableArrayList();
 
         String sql = "SELECT * FROM appointment WHERE doctor='"
-                +Data.doctor_id+"'";
+                + Data.doctor_id + "'";
 
         connect = Database.connectDB();
 
@@ -394,15 +394,15 @@ public class DoctorMainFormController implements Initializable {
             rs = prepare.executeQuery();
 
             AppointmentData appData;
-            while (rs.next()){
+            while (rs.next()) {
                 appData = new AppointmentData(rs.getInt("appointment_id")
-                        ,rs.getString("name")
-                        ,rs.getString("description")
-                        ,rs.getDate("date"),rs.getString("status"));
+                        , rs.getString("name")
+                        , rs.getString("description")
+                        , rs.getDate("date"), rs.getString("status"));
 
                 listData.add(appData);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return listData;
@@ -410,7 +410,7 @@ public class DoctorMainFormController implements Initializable {
 
     private ObservableList<AppointmentData> dashboardGetData;
 
-    public  void  dashboardDisplayData(){
+    public void dashboardDisplayData() {
         dashboardGetData = dashboardAppointmentTableView();
 
         dashboard_col_appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -423,12 +423,12 @@ public class DoctorMainFormController implements Initializable {
     }
 
 
-    public void dashboardNOP(){
+    public void dashboardNOP() {
 
         dashboard_chart_NP.getData().clear();
 
         String sql = "SELECT date, COUNT(id) FROM patient WHERE doctor = '"
-                +Data.doctor_id+"' GROUP BY date";
+                + Data.doctor_id + "' GROUP BY date";
 
         connect = Database.connectDB();
 
@@ -437,24 +437,24 @@ public class DoctorMainFormController implements Initializable {
             prepare = connect.prepareStatement(sql);
             rs = prepare.executeQuery();
 
-            while (rs.next()){
-                chart.getData().add(new XYChart.Data<>(rs.getString(1),rs.getInt(2)));
+            while (rs.next()) {
+                chart.getData().add(new XYChart.Data<>(rs.getString(1), rs.getInt(2)));
             }
 
             dashboard_chart_NP.getData().add(chart);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void dashboardNOA(){
+    public void dashboardNOA() {
 
         dashboard_chart_NA.getData().clear();
 
         String sql = "SELECT date, COUNT(id) FROM appointment WHERE doctor = '"
-                +Data.doctor_id+"' GROUP BY date ";
+                + Data.doctor_id + "' GROUP BY date ";
 
         connect = Database.connectDB();
 
@@ -463,17 +463,18 @@ public class DoctorMainFormController implements Initializable {
             prepare = connect.prepareStatement(sql);
             rs = prepare.executeQuery();
 
-            while (rs.next()){
-                chart.getData().add(new XYChart.Data<>(rs.getString(1),rs.getInt(2)));
+            while (rs.next()) {
+                chart.getData().add(new XYChart.Data<>(rs.getString(1), rs.getInt(2)));
             }
 
             dashboard_chart_NA.getData().add(chart);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     public void patientConfirmBtn() {
         if (patients_patientID.getText().isEmpty()
                 || patients_patientName.getText().isEmpty()
@@ -866,13 +867,20 @@ public class DoctorMainFormController implements Initializable {
 
             while (rs.next()) {
 
-                appData = new AppointmentData(rs.getInt("appointment_id")
-                        , rs.getString("name"), rs.getString("gender")
-                        , rs.getString("description"), rs.getString("diagnosis")
-                        , rs.getString("treatment"), rs.getLong("mobile_number")
-                        , rs.getDate("date"), rs.getDate("date_modify")
-                        , rs.getDate("date_delete"), rs.getString("status")
-                        , rs.getString("address"), rs.getDate("schedule"));
+                appData = new AppointmentData(rs.getInt("id")
+                        , rs.getInt("appointment_id")
+                        , rs.getString("name")
+                        , rs.getString("gender")
+                        ,rs.getLong("mobile_number")
+                        , rs.getString("description")
+                        , rs.getString("diagnosis")
+                        , rs.getString("treatment")
+                        ,rs.getString("address")
+                        , rs.getDate("date")
+                        , rs.getDate("date_modify")
+                        , rs.getDate("date_delete")
+                        , rs.getString("status")
+                        ,rs.getDate("schedule"));
 
                 listData.add(appData);
 
@@ -1178,12 +1186,12 @@ public class DoctorMainFormController implements Initializable {
     }
 
 
-    public void logoutBtn(){
+    public void logoutBtn() {
 
         try {
             if (alert.confirmationMessage("Are you sure you want to logout?")) {
-                Data.doctor_id="";
-                Data.doctor_name="";
+                Data.doctor_id = "";
+                Data.doctor_name = "";
                 Parent root = FXMLLoader.load(getClass().getResource("DoctorPage.fxml"));
                 Stage stage = new Stage();
 
@@ -1194,7 +1202,7 @@ public class DoctorMainFormController implements Initializable {
 
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
