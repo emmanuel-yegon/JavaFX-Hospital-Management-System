@@ -871,16 +871,18 @@ public class DoctorMainFormController implements Initializable {
                         , rs.getInt("appointment_id")
                         , rs.getString("name")
                         , rs.getString("gender")
-                        ,rs.getLong("mobile_number")
+                        , rs.getLong("mobile_number")
                         , rs.getString("description")
                         , rs.getString("diagnosis")
                         , rs.getString("treatment")
-                        ,rs.getString("address")
+                        , rs.getString("address")
+                        ,rs.getString("doctor")
+                        ,rs.getString("specialized")
                         , rs.getDate("date")
                         , rs.getDate("date_modify")
                         , rs.getDate("date_delete")
                         , rs.getString("status")
-                        ,rs.getDate("schedule"));
+                        , rs.getDate("schedule"));
 
                 listData.add(appData);
 

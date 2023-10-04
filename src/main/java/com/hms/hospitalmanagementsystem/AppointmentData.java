@@ -22,9 +22,9 @@ public class AppointmentData {
     private String specialized;
     private Date schedule;
 
-    public AppointmentData(Integer id, Integer appointmentID, String name, String gender, Long mobileNumber,String description,
-                           String diagnosis, String treatment,String address, Date date, Date dateModify,
-                           Date dateDelete, String status,Date schedule) {
+    public AppointmentData(Integer id, Integer appointmentID, String name, String gender, Long mobileNumber, String description,
+                           String diagnosis, String treatment, String address, String doctorID, String specialized, Date date, Date dateModify,
+                           Date dateDelete, String status, Date schedule) {
         this.id = id;
         this.appointmentID = appointmentID;
         this.name = name;
@@ -33,6 +33,8 @@ public class AppointmentData {
         this.description = description;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
+        this.doctorID = doctorID;
+        this.specialized = specialized;
         this.address = address;
         this.date = date;
         this.dateModify = dateModify;
@@ -41,9 +43,10 @@ public class AppointmentData {
         this.schedule = schedule;
     }
 
-    public AppointmentData(Integer appointmentID, String name, String gender, Long mobileNumber,String description,
+    public AppointmentData(Integer appointmentID, String name, String gender, Long mobileNumber, String description,
                            String diagnosis, String treatment, String address, Date date, Date dateModify,
                            Date dateDelete, String status, Date schedule) {
+
         this.appointmentID = appointmentID;
         this.name = name;
         this.gender = gender;
@@ -57,14 +60,17 @@ public class AppointmentData {
         this.dateDelete = dateDelete;
         this.status = status;
         this.schedule = schedule;
+
     }
 
     public AppointmentData(Integer appointmentID, String name, String description, Date date, String status) {
+
         this.appointmentID = appointmentID;
         this.name = name;
         this.description = description;
         this.date = date;
         this.status = status;
+
     }
 
     public Integer getId() {
@@ -121,5 +127,13 @@ public class AppointmentData {
 
     public Date getSchedule() {
         return schedule;
+    }
+
+    public String getDoctorID() {
+        return doctorID;
+    }
+
+    public String getSpecialized() {
+        return specialized;
     }
 }

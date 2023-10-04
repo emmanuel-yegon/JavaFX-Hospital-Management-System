@@ -31,6 +31,23 @@ public class Data {
     public static String temp_doctorImagePath;
     public static String temp_doctorAddress;
     public static String temp_doctorStatus;
+    public static String temp_date;
+    public static String temp_path;
+
+
+    public static String temp_appID;
+    public static String temp_appName;
+    public static String temp_appGender;
+    public static String temp_appMobileNumber;
+    public static String temp_appAddress;
+    public static String temp_appDescription;
+    public static String temp_appDiagnosis;
+    public static String temp_appTreatment;
+    public static String temp_appDoctor;
+    public static String temp_appSpecialized;
+    public static String temp_appStatus;
+
+
 
 
 }

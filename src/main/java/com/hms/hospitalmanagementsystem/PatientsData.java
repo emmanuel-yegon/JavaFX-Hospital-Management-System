@@ -60,6 +60,20 @@ public class PatientsData {
         this.status = status;
     }
 
+    public PatientsData(Integer id, Integer patientID,  String fullName, String gender, String image, String description, String diagnosis, String treatment, String doctor,Date date) {
+        this.id = id;
+        this.patientID = patientID;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.description = description;
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
+        this.image = image;
+        this.doctor = doctor;
+        this.date = date;
+    }
+
+
     public Integer getId() {
         return id;
     }

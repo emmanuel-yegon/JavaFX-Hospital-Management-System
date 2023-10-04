@@ -111,6 +111,7 @@ public class HospitalManagementController implements Initializable {
                 if (rs.next()) {
 
                     Data.admin_username = login_username.getText();
+                    Data.admin_id = Integer.parseInt(rs.getString("admin_id"));
 
                     alert.successMessage("Login Successfully!");
 
