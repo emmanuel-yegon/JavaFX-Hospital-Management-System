@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -64,8 +65,63 @@ public class EditAppointmentFormController implements Initializable {
     private ResultSet rs;
     private Statement statement;
 
+    private AlertMessage alert = new AlertMessage();
 
-    public void displayFields(){
+    public void updateBtn() {
+        if (editApp_appointmentID.getText().isEmpty()
+                || editApp_fullName.getText().isEmpty()
+                || editApp_gender.getSelectionModel().getSelectedItem() == null
+                || editApp_mobileNumber.getText().isEmpty()
+                || editApp_address.getText().isEmpty()
+                || editApp_description.getText().isEmpty()
+                || editApp_diagnosis.getText().isEmpty()
+                || editApp_doctor.getSelectionModel().getSelectedItem() == null
+                || editApp_treatment.getText().isEmpty()
+                || editApp_specialized.getSelectionModel().getSelectedItem() == null
+                || editApp_status.getSelectionModel().getSelectedItem() == null) {
+            alert.errorMessage("Please fill all the blank fields!");
+        } else {
+            connect = Database.connectDB();
+
+            String updateData = "UPDATE appointment SET name = ?, gender = ?, mobile_number = ?, address = ?,description = ?, diagnosis = ? ," +
+                    "treatment = ?, doctor = ?, specialized = ?, date_modify= ?, status = ? WHERE " +
+                    "appointment_id='" + editApp_appointmentID.getText() + "'";
+
+            try {
+
+                if (alert.confirmationMessage("Are you sure you want to UPDATE Appointment ID:" + editApp_appointmentID.getText() + "?")) {
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                    prepare = connect.prepareStatement(updateData);
+
+                    prepare.setString(1, editApp_fullName.getText());
+                    prepare.setString(2, editApp_gender.getSelectionModel().getSelectedItem());
+                    prepare.setString(3, editApp_mobileNumber.getText());
+                    prepare.setString(4, editApp_address.getText());
+                    prepare.setString(5, editApp_description.getText());
+                    prepare.setString(6, editApp_diagnosis.getText());
+                    prepare.setString(7, editApp_treatment.getText());
+                    prepare.setString(8, editApp_doctor.getSelectionModel().getSelectedItem());
+                    prepare.setString(9, editApp_specialized.getSelectionModel().getSelectedItem());
+                    prepare.setString(10, String.valueOf(sqlDate));
+                    prepare.setString(11, editApp_status.getSelectionModel().getSelectedItem());
+
+                    prepare.executeUpdate();
+
+                    alert.successMessage("Updated Successfully!");
+
+                } else {
+                    alert.errorMessage("Cancelled!");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void displayFields() {
 
         editApp_appointmentID.setText(Data.temp_appID);
         editApp_fullName.setText(Data.temp_appName);

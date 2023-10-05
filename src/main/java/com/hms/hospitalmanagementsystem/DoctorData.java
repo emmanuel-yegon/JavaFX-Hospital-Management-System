@@ -37,6 +37,13 @@ public class DoctorData {
         this.status = status;
     }
 
+    public DoctorData(String doctorID, String fullName, String specialized, String status) {
+        this.doctorID = doctorID;
+        this.fullName = fullName;
+        this.specialized = specialized;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }

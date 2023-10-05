@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -88,17 +89,17 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private AreaChart<?, ?> dashboard_chart_PD;
     @FXML
-    private TableColumn<?, ?> dashboard_col_doctorID;
+    private TableColumn<DoctorData, String> dashboard_col_doctorID;
     @FXML
-    private TableColumn<?, ?> dashboard_col_name;
+    private TableColumn<DoctorData, String> dashboard_col_name;
     @FXML
-    private TableColumn<?, ?> dashboard_col_specialized;
+    private TableColumn<DoctorData, String> dashboard_col_specialized;
     @FXML
-    private TableColumn<?, ?> dashboard_col_status;
+    private TableColumn<DoctorData, String> dashboard_col_status;
     @FXML
     private AnchorPane dashboard_form;
     @FXML
-    private TableView<?> dashboard_tableView;
+    private TableView<DoctorData> dashboard_tableView;
     @FXML
     private Label date_time;
     @FXML
@@ -251,6 +252,9 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private TableView<PatientsData> payment_tableView;
 
+    @FXML
+    private Button logout_btn;
+
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -260,6 +264,175 @@ public class AdminMainFormController implements Initializable {
     private final AlertMessage alert = new AlertMessage();
 
     private Image image;
+
+    public void dashboardAD() {
+
+        String sql = "SELECT COUNT(id) FROM doctor WHERE status='Active' AND date_delete IS NULL";
+
+        connect = Database.connectDB();
+
+        int tempAD = 0;
+        try {
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            if (rs.next()) {
+                tempAD = rs.getInt("COUNT(id)");
+            }
+            dashboard_AD.setText(String.valueOf(tempAD));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardTP() {
+
+        String sql = "SELECT COUNT(id) FROM patient WHERE date_delete IS NULL";
+
+        connect = Database.connectDB();
+
+        int tempTP = 0;
+        try {
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            if (rs.next()) {
+                tempTP = rs.getInt("COUNT(id)");
+            }
+            dashboard_TP.setText(String.valueOf(tempTP));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardAP() {
+
+        String sql = "SELECT COUNT(id) FROM patient WHERE date_delete IS NULL AND status = 'Active'";
+
+        connect = Database.connectDB();
+
+        int tempAP = 0;
+        try {
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            if (rs.next()) {
+                tempAP = rs.getInt("COUNT(id)");
+            }
+            dashboard_AP.setText(String.valueOf(tempAP));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardTA() {
+
+        String sql = "SELECT COUNT(id) FROM appointment WHERE date_delete IS NULL";
+
+        connect = Database.connectDB();
+
+        int tempTA = 0;
+        try {
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            if (rs.next()) {
+                tempTA = rs.getInt("COUNT(id)");
+            }
+            dashboard_TA.setText(String.valueOf(tempTA));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ObservableList<DoctorData> dashboardGetDoctorData() {
+
+        ObservableList<DoctorData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM doctor WHERE date_delete IS NULL";
+
+        connect = Database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+            rs = prepare.executeQuery();
+
+            DoctorData dData;
+
+            while (rs.next()) {
+                dData = new DoctorData(rs.getString("doctor_id")
+                        , rs.getString("full_name")
+                        , rs.getString("specialized")
+                        , rs.getString("status"));
+                listData.add(dData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
+    public ObservableList<DoctorData> dashboardGetDoctorListData;
+
+    public void dashboardGetDoctorDisplayData() {
+        dashboardGetDoctorListData = dashboardGetDoctorData();
+
+        dashboard_col_doctorID.setCellValueFactory(new PropertyValueFactory<>("doctorID"));
+        dashboard_col_name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        dashboard_col_specialized.setCellValueFactory(new PropertyValueFactory<>("specialized"));
+        dashboard_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        dashboard_tableView.setItems(dashboardGetDoctorListData);
+    }
+
+    public void dashboardPatientDataChart() {
+
+        dashboard_chart_PD.getData().clear();
+
+        String selectData = "SELECT date ,COUNT(id) FROM patient WHERE date_delete IS NULL GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 7";
+
+        connect = Database.connectDB();
+        XYChart.Series chart = new XYChart.Series<>();
+
+        try {
+            prepare = connect.prepareStatement(selectData);
+            rs = prepare.executeQuery();
+
+            while (rs.next()) {
+                chart.getData().add(new XYChart.Data<>(rs.getString(1), rs.getInt(2)));
+            }
+
+            dashboard_chart_PD.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardDoctorDataChart() {
+
+        dashboard_chart_DD.getData().clear();
+
+        String selectData = "SELECT date, COUNT(id) FROM doctor WHERE date_delete IS NULL  GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 7 ";
+
+        connect = Database.connectDB();
+        XYChart.Series chart = new XYChart.Series<>();
+
+        try {
+            prepare = connect.prepareStatement(selectData);
+            rs = prepare.executeQuery();
+
+            while (rs.next()) {
+                chart.getData().add(new XYChart.Data<>(rs.getString(1), rs.getInt(2)));
+            }
+
+            dashboard_chart_DD.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private ObservableList<DoctorData> doctorListData;
 
     public ObservableList<DoctorData> doctorGetData() {
@@ -517,7 +690,7 @@ public class AdminMainFormController implements Initializable {
                     }
                 }
             };
-            doctorDisplayData();
+            patientDisplayData();
             return cell;
         };
         patients_col_action.setCellFactory(cellFactory);
@@ -737,7 +910,7 @@ public class AdminMainFormController implements Initializable {
                     }
                 }
             };
-            doctorDisplayData();
+            appointmentDisplayData();
             return cell;
         };
         appointments_action.setCellFactory(cellFactory);
@@ -993,6 +1166,13 @@ public class AdminMainFormController implements Initializable {
             profile_form.setVisible(false);
             payment_form.setVisible(false);
 
+            dashboardAD();
+            dashboardTP();
+            dashboardAP();
+            dashboardTA();
+            dashboardGetDoctorDisplayData();
+
+            current_form.setText("Dashboard Form");
         } else if (event.getSource() == doctors_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(true);
@@ -1004,6 +1184,7 @@ public class AdminMainFormController implements Initializable {
             doctorActionButtons();
             doctorDisplayData();
 
+            current_form.setText("Doctor's Form");
         } else if (event.getSource() == patients_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -1015,6 +1196,7 @@ public class AdminMainFormController implements Initializable {
             patientDisplayData();
             patientActionButtons();
 
+            current_form.setText("Patient's Form");
         } else if (event.getSource() == appointments_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -1025,6 +1207,18 @@ public class AdminMainFormController implements Initializable {
 
             appointmentDisplayData();
 
+            current_form.setText("Appointment's Form");
+        } else if (event.getSource() == payment_btn) {
+            dashboard_form.setVisible(false);
+            doctors_form.setVisible(false);
+            patients_form.setVisible(false);
+            appointments_form.setVisible(false);
+            profile_form.setVisible(false);
+            payment_form.setVisible(true);
+
+            paymentDisplayData();
+
+            current_form.setText("Payment Form");
         } else if (event.getSource() == profile_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -1036,15 +1230,7 @@ public class AdminMainFormController implements Initializable {
             profileDisplayInfo();
             profileDisplayImages();
 
-        } else if (event.getSource() == payment_btn) {
-            dashboard_form.setVisible(false);
-            doctors_form.setVisible(false);
-            patients_form.setVisible(false);
-            appointments_form.setVisible(false);
-            profile_form.setVisible(false);
-            payment_form.setVisible(true);
-
-            paymentDisplayData();
+            current_form.setText("Profile Form");
         }
 
     }
@@ -1064,6 +1250,23 @@ public class AdminMainFormController implements Initializable {
                 String tempUsername = rs.getString("username");
                 tempUsername = tempUsername.substring(0, 1).toUpperCase() + tempUsername.substring(1);
                 nav_username.setText(tempUsername);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void logoutBtn() {
+        try {
+            if (alert.confirmationMessage("Are you sure you want to logout?")) {
+                Parent root = FXMLLoader.load(getClass().getResource("Hms.fxml"));
+                Stage stage = new Stage();
+
+                stage.setScene(new Scene(root));
+                stage.show();
+
+                logout_btn.getScene().getWindow().hide();
             }
 
         } catch (Exception e) {
@@ -1097,6 +1300,17 @@ public class AdminMainFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         runTime();
         displayAdminIDUsername();
+
+
+        dashboardAD();
+        dashboardTP();
+        dashboardAP();
+        dashboardTA();
+
+        dashboardGetDoctorDisplayData();
+        dashboardPatientDataChart();
+        dashboardDoctorDataChart();
+
 
         doctorDisplayData();
         doctorActionButtons();
