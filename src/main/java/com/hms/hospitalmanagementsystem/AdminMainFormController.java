@@ -1250,6 +1250,7 @@ public class AdminMainFormController implements Initializable {
                 String tempUsername = rs.getString("username");
                 tempUsername = tempUsername.substring(0, 1).toUpperCase() + tempUsername.substring(1);
                 nav_username.setText(tempUsername);
+                top_username.setText(tempUsername);
             }
 
         } catch (Exception e) {
@@ -1275,9 +1276,7 @@ public class AdminMainFormController implements Initializable {
     }
 
     public void runTime() {
-
         new Thread() {
-
             public void run() {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
@@ -1287,7 +1286,6 @@ public class AdminMainFormController implements Initializable {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     Platform.runLater(() -> {
                         date_time.setText(format.format(new Date()));
                     });

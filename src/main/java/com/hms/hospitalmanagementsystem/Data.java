@@ -9,6 +9,8 @@ public class Data {
     public static String doctor_id;
     public static String doctor_name;
 
+    public static Integer patient_id;
+
     public static String[] gender = {"Male", "Female"};
 
     public static String[] status = {"Active", "Inactive", "Confirm"};

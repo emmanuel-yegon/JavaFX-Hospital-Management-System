@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="300.0" stylesheets="@design/MainFormDesign.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hms.hospitalmanagementsystem.DoctorCardController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Circle fx:id="doctor_circle" fill="#364950" radius="53.0" stroke="BLACK" strokeType="INSIDE">
+               <VBox.margin>
+                  <Insets left="90.0" top="20.0" />
+               </VBox.margin>
+            </Circle>
+            <HBox prefHeight="22.0" prefWidth="300.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="119.0" text="Doctor ID:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="doctor_id" layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="188.0" text="Label">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="20.0" layoutY="146.0" prefHeight="22.0" prefWidth="300.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="134.0" text="Full Name:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="doctor_fullName" layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="201.0" text="Label">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="20.0" layoutY="146.0" prefHeight="22.0" prefWidth="300.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="122.0" text="Specialization:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="doctor_specialization" layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="188.0" text="Label">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox layoutX="20.0" layoutY="168.0" prefHeight="22.0" prefWidth="300.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="135.0" text="Email Address:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="doctor_email" layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="201.0" text="Label">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <styleClass>
+      <String fx:value="shadow" />
+      <String fx:value="white-bg" />
+      <String fx:value="radius" />
+   </styleClass>
+</StackPane>

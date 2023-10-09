@@ -856,7 +856,8 @@ public class DoctorMainFormController implements Initializable {
         ObservableList<AppointmentData> listData = FXCollections.observableArrayList();
         connect = Database.connectDB();
 
-        String sql = "SELECT * FROM appointment WHERE  date_delete IS NULL";
+        String sql = "SELECT * FROM appointment WHERE  date_delete IS NULL AND doctor='"
+                + Data.doctor_id + "'";
 
         try {
 
@@ -876,8 +877,8 @@ public class DoctorMainFormController implements Initializable {
                         , rs.getString("diagnosis")
                         , rs.getString("treatment")
                         , rs.getString("address")
-                        ,rs.getString("doctor")
-                        ,rs.getString("specialized")
+                        , rs.getString("doctor")
+                        , rs.getString("specialized")
                         , rs.getDate("date")
                         , rs.getDate("date_modify")
                         , rs.getDate("date_delete")
@@ -1202,6 +1203,16 @@ public class DoctorMainFormController implements Initializable {
 
                 logout_btn.getScene().getWindow().hide();
 
+                Data.doctor_id = "";
+                Data.doctor_name = "";
+                Data.temp_patientID = 0;
+                Data.temp_name = "";
+                Data.temp_gender = "";
+                Data.temp_number = Long.parseLong("0");
+                Data.temp_address = "";
+                Data.temp_status = "";
+                Data.temp_date = "";
+                Data.temp_path = "";
 
             }
         } catch (Exception e) {

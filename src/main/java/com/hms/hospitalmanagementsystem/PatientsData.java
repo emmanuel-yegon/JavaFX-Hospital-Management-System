@@ -73,6 +73,14 @@ public class PatientsData {
         this.date = date;
     }
 
+    public PatientsData(Integer id, Integer patientID,String description, String diagnosis, String treatment,Date date) {
+        this.id = id;
+        this.patientID = patientID;
+        this.description = description;
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
+        this.date = date;
+    }
 
     public Integer getId() {
         return id;

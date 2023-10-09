@@ -100,7 +100,18 @@ public class PatientPageController implements Initializable {
                     rs = prepare.executeQuery();
 
                     if (rs.next()) {
+                        Data.patient_id = Integer.parseInt(login_patientID.getText());
+
                         alert.successMessage("Login Successfully!");
+
+                        Parent root = FXMLLoader.load(getClass().getResource("PatientMainForm.fxml"));
+                        Stage stage = new Stage();
+
+                        stage.setScene(new Scene(root));
+                        stage.show();
+
+                        login_loginBtn.getScene().getWindow().hide();
+
                     } else {
                         alert.errorMessage("Incorrect Patient ID/Password");
                     }

@@ -73,6 +73,19 @@ public class AppointmentData {
 
     }
 
+
+    public AppointmentData(Integer appointmentID, String description, String diagnosis, String treatment, String doctorID, Date schedule) {
+
+        this.appointmentID = appointmentID;
+        this.description = description;
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
+        this.doctorID = doctorID;
+        this.schedule = schedule;
+
+    }
+
+
     public Integer getId() {
         return id;
     }
